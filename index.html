@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+</head>
+<body>
+    <header>Harry Potter Theme</header>
+    <div id="answerpic"></div>
+    <div id="game">
+        <p>Press any key to get started!</p>
+        <p>Wins</p>
+        <p id="winscount">0</p>
+        <p>Current Word</p>
+        <p id="log"></p>
+        <p>Number of Guesses Remaining</p>
+        <p id="guessleft">15</p>
+        <p>Letters Already Guessed</p>
+        <p id="oldguess">?</p>
+    </div>
+<script>
+    var wins = 0;
+    var guessLeft = 20;
+    var oldGuess = [];
+
+//When page is ready, computer picks a word out of wordList & generate equal number of underscores to match the length of the chosen word.
+    
+    var log = document.getElementById("log");
+    var wordList = ["horcrux", "patronus", "hippogriff", "mandrake", "dementor", "thestrals", "azkaban", "durmstrang", "hogsmeade", "quidditch"];
+    var str = wordList[Math.floor(Math.random() * wordList.length)];
+
+    //console log the current word
+    console.log(str);
+    
+    //add space in between characters
+    var space = str.split('');
+
+    console.log(space);
+    console.log(space[3]);
+
+    //write out the replaced letters in underscores for display
+    var replaced = space.map( x => '_' );
+    log.innerHTML += replaced;          
+
+    document.onkeyup = function(event) {
+        var userGuess = event.key;
+
+//defines function for reset if for guess left = 0 or win++        
+        function reset() {
+            guessLeft = 20;
+            oldGuess.length = 0;
+        }
+
+        
+        for (i=0; i<str.length; i++) {
+            if (userGuess == str[i]) {
+                replaced[i] = userGuess;
+                log.innerHTML = replaced;  
+            }
+            else {
+                guessLeft--;
+                oldGuess.push(userGuess);
+                }
+            }
+        };
+        
+
+        // var html2 = 
+        // "<p>Press any key to get started!</p>" +
+        // "<p>Wins</p>" +
+        // "<p>" + wins + "</p>" +
+        // "<p>Current Word</p>" +
+        // "<p id=current></p>" +
+        // "<p>Number of Guesses Remaining</p>" +
+        // "<p>" + guessLeft + "</p>" +
+        // "<p>Letters Already Guessed</p>" +
+        // "<p>" + oldGuess + "</p>";
+      
+        // document.querySelector("#game").innerHTML = html2;
+// };
+
+</script>
+</body>
+</html>
