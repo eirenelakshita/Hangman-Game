@@ -36,16 +36,22 @@
     var str = wordList[Math.floor(Math.random() * wordList.length)];
 
 
-//console log the current word
+    //console log the current word
     console.log(str);
+    
+    //add space in between characters
+    var space = str.split('');
 
-    var replaced = str.replace(/[A-z]/g, '_ ');         
-    log.innerHTML += replaced;
+    console.log(space);
+    console.log(space[3]);
+
+    //write out the replaced letters in underscores for display
+    var replaced = space.map( x => '_' );
+    log.innerHTML += replaced;          
 
     document.onkeyup = function(event) {
         var userGuess = event.key;
-        console.log(userGuess);
-        
+
 //defines function for reset if for guess left = 0 or win++        
         function reset() {
             guessLeft = 15;
@@ -53,19 +59,10 @@
         }
 
         
-        for (i=0; i<str.length; i++) {
-            if (userGuess == str[i]) {
-                replaced[i] = userGuess;
-                log.innerHTML = replaced;
-                console.log(replaced);
-            }
-            else {
-                guessLeft--;
-                oldGuess.push(userGuess);
-                };
+        for (i=0; i<str.length; i++) {};
+        
+// FUNCTIONS        
 
-        };
-    };
 
 
 </script>

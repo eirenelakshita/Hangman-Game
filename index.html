@@ -10,6 +10,7 @@
     
 </head>
 <body>
+    <img src="assets/images/hogwarts.jpg">
     <header>Harry Potter Theme</header>
     <div id="answerpic"></div>
     <div id="game">
@@ -19,13 +20,16 @@
         <p>Current Word</p>
         <p id="log"></p>
         <p>Number of Guesses Remaining</p>
-        <p id="guessleft">15</p>
+        <p id="chanceleft">15</p>
         <p>Letters Already Guessed</p>
-        <p id="oldguess">?</p>
+        <p id="guesstrack">?</p>
     </div>
 <script>
-    var wins = 0;
-    var guessLeft = 20;
+    var wins = document.getElementById("winscount");
+    var chanceLeft = document.getElementById("chanceleft");
+    var guessTrack = document.getElementById("guesstrack");
+
+    var guessLeft = 15;
     var oldGuess = [];
 
 //When page is ready, computer picks a word out of wordList & generate equal number of underscores to match the length of the chosen word.
@@ -34,40 +38,71 @@
     var wordList = ["horcrux", "patronus", "hippogriff", "mandrake", "dementor", "thestrals", "azkaban", "durmstrang", "hogsmeade", "quidditch"];
     var str = wordList[Math.floor(Math.random() * wordList.length)];
 
+
     //console log the current word
     console.log(str);
-    
+
     //add space in between characters
     var space = str.split('');
 
     console.log(space);
     console.log(space[3]);
 
+/////////////////////////////////////////FUNCTIONS//////////////////////////////////////////
+
+    function winFunction() {
+        log.innerHTML = replaced.join();
+        wins++;
+        winCounter.innerHTML = wins;
+        reset();
+        }
+
+    function reset() {
+        guessLeft = 15;
+        oldGuess.length = 0;
+        chanceLeft.html = guessLeft;
+        guessTrack.innerHTML = oldGuess;
+        }
+
     //write out the replaced letters in underscores for display
     var replaced = space.map( x => '_' );
-    log.innerHTML += replaced;          
+    log.innerHTML += replaced;
 
     document.onkeyup = function(event) {
         var userGuess = event.key;
+        console.log(userGuess);
+        oldGuess.push(userGuess);
+        guessTrack.innerHTML = oldGuess;
 
-//defines function for reset if for guess left = 0 or win++        
-        function reset() {
-            guessLeft = 20;
-            oldGuess.length = 0;
-        }
+    //defines function for reset if for guess left = 0 or win++        
 
         
         for (i=0; i<str.length; i++) {
             if (userGuess == str[i]) {
                 replaced[i] = userGuess;
-                log.innerHTML = replaced;  
+                log.innerHTML = replaced;
+                console.log(replaced);
             }
             else {
-                guessLeft--;
-                oldGuess.push(userGuess);
-                }
+            guessLeft--;
+            chanceLeft.innerHTML = guessLeft;    
             }
+        
+        if (replaced.indexOf('_ ') === 0) {
+            winFunction();
+            reset();
+            }
+
+        if (guessLeft === 0) {
+            alert("Correct answer is " + str);
+            reset();
+            }
+        
+        // if (replaced.equals(space)) { 
+        //     replaced.join('');
+        //     console.log("replaced",replaced)
         };
+    };
         
 
         // var html2 = 
