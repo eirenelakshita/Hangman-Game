@@ -6,31 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hangman Game</title>
     <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Rouge+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rouge+Script|UnifrakturCook:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do" rel="stylesheet">
     
 </head>
 <body>
     <img src="assets/images/hogwarts.jpg">
-    <header>Harry Potter Theme</header>
+    <header class="text-center h1">Harry Potter Theme</header>
     <div id="answerpic"></div>
-    <div id="game">
-        <p>Press any key to get started!</p>
-        <p>Wins</p>
-        <p id="winscount">0</p>
-        <p>Current Word</p>
-        <p id="log"></p>
-        <p>Number of Guesses Remaining</p>
-        <p id="chanceleft">15</p>
-        <p>Letters Already Guessed</p>
-        <p id="guesstrack">?</p>
+    <div class = "text-center" id="game">
+        <p class="h2">Press any key to get started!</p>
+        <p class="h2">Wins</p>
+        <p class="font-weight-bold h3" id="winscount">0</p>
+        <p class="h2">Current Word</p>
+        <p class="font-weight-bold h3" id="log"></p>
+        <p class="h2">Number of Guesses Remaining</p>
+        <p class="font-weight-bold h3" id="chanceleft">15</p>
+        <p class="h2">Letters Already Guessed</p>
+        <p class="font-weight-bold h3" id="guesstrack">?</p>
     </div>
+
+    <footer class ="text-center h5"> Copyright: laeirene94 </footer>
+
+
+
 <script>
-    var wins = document.getElementById("winscount");
+    var winsCount = document.getElementById("winscount");
     var chanceLeft = document.getElementById("chanceleft");
     var guessTrack = document.getElementById("guesstrack");
 
     var guessLeft = 15;
     var oldGuess = [];
+    var wins = 0;
 
 //When page is ready, computer picks a word out of wordList & generate equal number of underscores to match the length of the chosen word.
     
@@ -48,12 +58,15 @@
     console.log(space);
     console.log(space[3]);
 
+    //write out the replaced letters in underscores for display
+    var replaced = space.map( x => '_' );
+    log.innerHTML += replaced.join(" ");
+
 /////////////////////////////////////////FUNCTIONS//////////////////////////////////////////
 
-    function winFunction() {
-        log.innerHTML = replaced.join();
+    function winfunction() {
         wins++;
-        winCounter.innerHTML = wins;
+        winsCount.innerHTML = wins;
         reset();
         }
 
@@ -64,45 +77,66 @@
         guessTrack.innerHTML = oldGuess;
         }
 
-    //write out the replaced letters in underscores for display
-    var replaced = space.map( x => '_' );
-    log.innerHTML += replaced;
+    function wrongguess() {
+        if (str.includes(userGuess)) {
+            console.log(guessLeft--);
+            };
+    }
+
+    function newword() {
+        str = wordList[Math.floor(Math.random() * wordList.length)];
+        space = str.split('');
+        replaced = space.map( x => '_' );
+        log.innerHTML = replaced.join(" ");
+    }
+
+/////////////////////////////////////////FUNCTIONS//////////////////////////////////////////
+
+
+//Activates the following when player clicks a key
 
     document.onkeyup = function(event) {
         var userGuess = event.key;
         console.log(userGuess);
+
+
+//defines function for reset if for guess left = 0 or win++            
+        
+        if (oldGuess.includes(userGuess)) {
+            (alert("You have been confunded! Do not repeat!"))
+        }
+        
+        else {
         oldGuess.push(userGuess);
         guessTrack.innerHTML = oldGuess;
 
-    //defines function for reset if for guess left = 0 or win++        
-
-        
         for (i=0; i<str.length; i++) {
             if (userGuess == str[i]) {
                 replaced[i] = userGuess;
-                log.innerHTML = replaced;
+                log.innerHTML = replaced.join(" ");
                 console.log(replaced);
             }
-            else {
-            guessLeft--;
-            chanceLeft.innerHTML = guessLeft;    
             }
         
-        if (replaced.indexOf('_ ') === 0) {
-            winFunction();
-            reset();
+        if (str.includes(userGuess)) {
+            console.log(userGuess);
+            } else {
+                guessLeft--;
+                chanceLeft.innerHTML = guessLeft;
+                if (guessLeft === 0) {
+                alert("Correct answer is " + str);
+                reset();
+                newword();
+            }
             }
 
-        if (guessLeft === 0) {
-            alert("Correct answer is " + str);
+        if (log.innerHTML == space.join(" ")) {
+            winfunction();
             reset();
+            newword();
             }
         
-        // if (replaced.equals(space)) { 
-        //     replaced.join('');
-        //     console.log("replaced",replaced)
-        };
-    };
+
         
 
         // var html2 = 
@@ -117,7 +151,8 @@
         // "<p>" + oldGuess + "</p>";
       
         // document.querySelector("#game").innerHTML = html2;
-// };
+}
+};
 
 </script>
 </body>
